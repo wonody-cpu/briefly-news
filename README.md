@@ -4,6 +4,11 @@
 
 현재 상태: 핵심 기능 1차 구현 완료
 
+## 바로가기
+
+- 웹 애플리케이션: https://briefly-news-brown.vercel.app
+- GitHub 저장소: https://github.com/wonody-cpu/briefly-news
+
 ## 로컬 실행
 
 1. `.env.local` 파일의 `GNEWS_API_KEY=` 뒤에 발급받은 키를 입력합니다.

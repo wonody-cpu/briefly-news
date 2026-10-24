@@ -97,3 +97,10 @@ GNews API를 사용한다. 여러 언어와 국가의 뉴스를 구조화된 JSO
 
 이 구성은 별도의 데이터베이스나 로그인 없이도 핵심 기능을 구현하며, API 키가 공개되는 문제와 배포 환경의 브라우저 요청 제한을 피할 수 있다.
 
+## 10. 배포 결과
+
+- 웹 애플리케이션 URL: https://briefly-news-brown.vercel.app
+- GitHub Repository URL: https://github.com/wonody-cpu/briefly-news
+- 배포 환경: Vercel Production
+- 최종 확인: 공개 페이지 HTTP 200, 뉴스 API HTTP 200, 한국어 주요 뉴스 10건 반환
+
