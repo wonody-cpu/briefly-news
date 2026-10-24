@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="관심 주제별 최신 뉴스를 빠르게 탐색하고 저장하는 뉴스 브리핑 앱">
+  <title>Briefly — 관심 뉴스 브리핑</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Briefly 홈">
+      <span class="brand-mark" aria-hidden="true">B</span>
+      <span>Briefly</span>
+    </a>
+    <button class="saved-button" id="savedButton" type="button" aria-pressed="false">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.5 4.75A1.75 1.75 0 0 1 8.25 3h7.5a1.75 1.75 0 0 1 1.75 1.75v16l-5.5-3.5-5.5 3.5v-16Z"/></svg>
+      저장한 기사 <span id="savedCount">0</span>
+    </button>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="pageTitle">
+      <p class="eyebrow">YOUR DAILY SIGNAL</p>
+      <h1 id="pageTitle">알아야 할 소식만,<br><em>간결하게.</em></h1>
+      <p class="hero-copy">광고·마케팅부터 AI와 문화까지. 관심 분야의 흐름을 한곳에서 확인하고 중요한 기사는 저장하세요.</p>
+
+      <form class="search" id="searchForm" role="search">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg>
+        <label class="sr-only" for="searchInput">뉴스 검색</label>
+        <input id="searchInput" type="search" maxlength="80" placeholder="관심 키워드를 검색해 보세요">
+        <button type="submit">검색</button>
+      </form>
+    </section>
+
+    <section class="feed" aria-labelledby="feedTitle">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">TOPICS</p>
+          <h2 id="feedTitle">오늘의 브리핑</h2>
+          <button class="back-to-news is-hidden" id="backToNewsButton" type="button">← 전체 뉴스로 돌아가기</button>
+        </div>
+        <p class="update-time" id="updateTime" aria-live="polite">뉴스를 불러오는 중</p>
+      </div>
+
+      <div class="categories" id="categories" role="tablist" aria-label="뉴스 카테고리">
+        <button type="button" role="tab" aria-selected="true" data-category="general">주요 뉴스</button>
+        <button type="button" role="tab" aria-selected="false" data-category="business">비즈니스·브랜드</button>
+        <button type="button" role="tab" aria-selected="false" data-category="technology">기술·AI</button>
+        <button type="button" role="tab" aria-selected="false" data-category="entertainment">문화·콘텐츠</button>
+        <button type="button" role="tab" aria-selected="false" data-category="science">과학</button>
+      </div>
+
+      <div class="status" id="status" aria-live="polite"></div>
+      <div class="news-grid" id="newsGrid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Briefly</strong> · 관심 뉴스 탐색을 더 가볍게</p>
+    <p>기사의 저작권은 각 언론사에 있습니다.</p>
+  </footer>
+
+  <template id="skeletonTemplate">
+    <article class="news-card skeleton-card" aria-hidden="true">
+      <div class="skeleton image-skeleton"></div>
+      <div class="card-body">
+        <div class="skeleton line short"></div>
+        <div class="skeleton line"></div>
+        <div class="skeleton line"></div>
+        <div class="skeleton line medium"></div>
+      </div>
+    </article>
+  </template>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
+
