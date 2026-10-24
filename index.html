@@ -26,7 +26,7 @@
     <section class="hero" aria-labelledby="pageTitle">
       <p class="eyebrow">YOUR DAILY SIGNAL</p>
       <h1 id="pageTitle">알아야 할 소식만,<br><em>간결하게.</em></h1>
-      <p class="hero-copy">광고·마케팅부터 AI와 문화까지. 관심 분야의 흐름을 한곳에서 확인하고 중요한 기사는 저장하세요.</p>
+      <p class="hero-copy">오늘의 주요 이슈부터 비즈니스, 기술·AI, 문화·콘텐츠, 과학까지. 분야별 흐름을 한곳에서 확인하고 중요한 기사는 저장하세요.</p>
 
       <form class="search" id="searchForm" role="search">
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg>
@@ -52,6 +52,13 @@
         <button type="button" role="tab" aria-selected="false" data-category="technology">기술·AI</button>
         <button type="button" role="tab" aria-selected="false" data-category="entertainment">문화·콘텐츠</button>
         <button type="button" role="tab" aria-selected="false" data-category="science">과학</button>
+      </div>
+
+      <div class="feed-tools">
+        <label for="sourceFilter">뉴스 출처</label>
+        <select id="sourceFilter">
+          <option value="all">전체 출처</option>
+        </select>
       </div>
 
       <div class="status" id="status" aria-live="polite"></div>

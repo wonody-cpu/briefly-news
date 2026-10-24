@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { deriveTitle, getNews, normalizeArticle } from "../lib/news.js";
+import { deriveSummary, deriveTitle, getNews, normalizeArticle } from "../lib/news.js";
 
 test("normalizeArticle은 누락된 설명과 출처에 기본값을 사용한다", () => {
   const result = normalizeArticle({ title: "테스트", url: "https://example.com/a" });
@@ -20,6 +20,12 @@ test("방송사명이 제목으로 온 경우 설명에서 표시 제목을 만�
     source: { name: "KBS 뉴스" }
   });
   assert.equal(title, "인공지능 거품 우려로 투자자들의 안전자산 선호가 강해지고 있습니다.");
+});
+
+test("기사 설명의 첫 문장을 자르지 않고 핵심 한 줄로 정리한다", () => {
+  const summary = deriveSummary("[서울=뉴스] " + "새로운 정책의 주요 내용과 사회적 영향을 설명하는 문장입니다. ".repeat(4));
+  assert.equal(summary, "새로운 정책의 주요 내용과 사회적 영향을 설명하는 문장입니다.");
+  assert.doesNotMatch(summary, /^\[서울=뉴스\]/);
 });
 
 test("알 수 없는 카테고리는 주요 뉴스로 처리한다", async () => {

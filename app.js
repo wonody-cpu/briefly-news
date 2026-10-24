@@ -3,6 +3,7 @@ const STORAGE_KEY = "briefly-bookmarks-v1";
 const state = {
   category: "general",
   keyword: "",
+  source: "all",
   articles: [],
   bookmarks: loadBookmarks(),
   savedOnly: false,
@@ -20,6 +21,7 @@ const elements = {
   savedCount: document.querySelector("#savedCount"),
   feedTitle: document.querySelector("#feedTitle"),
   backToNewsButton: document.querySelector("#backToNewsButton"),
+  sourceFilter: document.querySelector("#sourceFilter"),
   skeletonTemplate: document.querySelector("#skeletonTemplate")
 };
 
@@ -82,7 +84,10 @@ function articleCard(article) {
     <div class="card-body">
       <div class="card-meta"><span class="source">${escapeHtml(article.source)}</span><time>${escapeHtml(formatDate(article.publishedAt))}</time></div>
       <h3><a href="${escapeHtml(article.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(article.title)}</a></h3>
-      <p class="description">${escapeHtml(article.description)}</p>
+      <div class="summary">
+        <span>핵심 한 줄</span>
+        <p>${escapeHtml(article.summary || article.description)}</p>
+      </div>
       <a class="read-link" href="${escapeHtml(article.url)}" target="_blank" rel="noopener noreferrer">기사 원문 읽기 ↗</a>
     </div>`;
 
@@ -98,9 +103,13 @@ function articleCard(article) {
 function renderArticles() {
   const keyword = state.keyword.toLocaleLowerCase("ko-KR");
   const sourceArticles = state.savedOnly ? [...state.bookmarks.values()] : state.articles;
-  const articles = keyword
+  updateSourceOptions(sourceArticles);
+  const keywordFiltered = keyword
     ? sourceArticles.filter((article) => `${article.title} ${article.description}`.toLocaleLowerCase("ko-KR").includes(keyword))
     : sourceArticles;
+  const articles = state.source === "all"
+    ? keywordFiltered
+    : keywordFiltered.filter((article) => article.source === state.source);
   elements.status.className = "status";
   elements.newsGrid.replaceChildren();
   elements.savedButton.setAttribute("aria-pressed", String(state.savedOnly));
@@ -120,6 +129,15 @@ function renderArticles() {
   const fragment = document.createDocumentFragment();
   articles.forEach((article) => fragment.append(articleCard(article)));
   elements.newsGrid.append(fragment);
+}
+
+function updateSourceOptions(articles) {
+  const sources = [...new Set(articles.map((article) => article.source).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, "ko"));
+  if (state.source !== "all" && !sources.includes(state.source)) state.source = "all";
+  elements.sourceFilter.replaceChildren(new Option("전체 출처", "all"));
+  sources.forEach((source) => elements.sourceFilter.add(new Option(source, source)));
+  elements.sourceFilter.value = state.source;
 }
 
 function toggleBookmark(article) {
@@ -168,6 +186,7 @@ elements.categories.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-category]");
   if (!button || state.savedOnly || button.dataset.category === state.category) return;
   state.category = button.dataset.category;
+  state.source = "all";
   elements.categories.querySelectorAll("button").forEach((item) => item.setAttribute("aria-selected", String(item === button)));
   fetchNews();
 });
@@ -179,11 +198,17 @@ elements.searchForm.addEventListener("submit", (event) => {
   document.querySelector(".feed").scrollIntoView({ behavior: "smooth" });
 });
 
+elements.sourceFilter.addEventListener("change", () => {
+  state.source = elements.sourceFilter.value;
+  renderArticles();
+});
+
 elements.savedButton.addEventListener("click", () => {
   state.savedOnly = !state.savedOnly;
   if (state.savedOnly) {
     state.requestId += 1;
     state.keyword = "";
+    state.source = "all";
     elements.searchInput.value = "";
     elements.updateTime.textContent = `${state.bookmarks.size}개의 저장된 기사`;
     renderArticles();
@@ -195,6 +220,7 @@ elements.savedButton.addEventListener("click", () => {
 elements.backToNewsButton.addEventListener("click", () => {
   state.savedOnly = false;
   state.keyword = "";
+  state.source = "all";
   elements.searchInput.value = "";
   fetchNews();
 });
