@@ -31,4 +31,6 @@ API 키가 포함된 `.env.local` 파일은 `.gitignore`에 등록되어 GitHub�
 
 - `docs/project-plan.md`: 문제 정의, 사용자, 핵심 요구사항과 개발 범위
 - `docs/development-log.md`: AI 활용 및 문제 해결 과정 기록
+- `docs/final-report.md`: 제출용 개발 보고서 원본
+- `docs/Briefly-개발보고서.pdf`: 제출용 PDF 보고서
 
