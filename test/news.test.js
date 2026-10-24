@@ -28,6 +28,14 @@ test("기사 설명의 첫 문장을 자르지 않고 핵심 한 줄로 정리�
   assert.doesNotMatch(summary, /^\[서울=뉴스\]/);
 });
 
+test("잘린 설명 대신 본문의 완전한 첫 문장을 사용한다", () => {
+  const summary = deriveSummary(
+    "글로벌 회사채 신용스...",
+    "글로벌 회사채 신용스프레드가 1년 5개월 만에 최고 수준으로 확대됐습니다. 다음 문장입니다. [2586 chars]"
+  );
+  assert.equal(summary, "글로벌 회사채 신용스프레드가 1년 5개월 만에 최고 수준으로 확대됐습니다.");
+});
+
 test("GameGPU 출처 기사는 목록에서 제외한다", () => {
   assert.equal(isAllowedSource({ source: { name: "GameGPU" } }), false);
   assert.equal(isAllowedSource({ source: { name: "KBS 뉴스" } }), true);
