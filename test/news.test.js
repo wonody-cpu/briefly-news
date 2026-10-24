@@ -36,6 +36,17 @@ test("잘린 설명 대신 본문의 완전한 첫 문장을 사용한다", () =
   assert.equal(summary, "글로벌 회사채 신용스프레드가 1년 5개월 만에 최고 수준으로 확대됐습니다.");
 });
 
+test("KBS 본문의 안내 문구를 제외하고 제목과 핵심 문장을 추출한다", () => {
+  const article = {
+    title: "KBS 뉴스",
+    description: "인공지능 우려로 안전자산 선호가 강해지면서 신용스...",
+    content: "기사 본문 영역\nAI 투자 우려에 위험 회피 심리 확대\n읽어주기 기능은 크롬기반의 브라우저에서만 사용하실 수 있습니다.\n인공지능 우려로 안전자산 선호가 강해지면서 신용스프레드가 확대됐습니다. 다음 문장입니다. [1200 chars]",
+    source: { name: "KBS 뉴스" }
+  };
+  assert.equal(deriveTitle(article), "AI 투자 우려에 위험 회피 심리 확대");
+  assert.equal(deriveSummary(article.description, article.content), "인공지능 우려로 안전자산 선호가 강해지면서 신용스프레드가 확대됐습니다.");
+});
+
 test("GameGPU 출처 기사는 목록에서 제외한다", () => {
   assert.equal(isAllowedSource({ source: { name: "GameGPU" } }), false);
   assert.equal(isAllowedSource({ source: { name: "KBS 뉴스" } }), true);
