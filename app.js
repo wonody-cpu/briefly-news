@@ -29,7 +29,9 @@ function loadBookmarks() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
     if (!Array.isArray(saved)) return new Map();
-    return new Map(saved.filter((article) => article?.id && article?.url).map((article) => [article.id, article]));
+    return new Map(saved
+      .filter((article) => article?.id && article?.url && article.source?.toLocaleLowerCase("en-US") !== "gamegpu")
+      .map((article) => [article.id, article]));
   } catch {
     return new Map();
   }
