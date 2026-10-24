@@ -4,6 +4,8 @@ import { writeFile } from "node:fs/promises";
 const chromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const targetUrl = process.argv[2] || "https://briefly-news-brown.vercel.app";
 const outputPath = process.argv[3] || "docs/screenshots/briefly-mobile.png";
+const captureMode = process.argv[4] || "mobile";
+const viewport = captureMode === "saved" ? { width: 1440, height: 1300 } : { width: 390, height: 1800 };
 const port = 9223;
 
 const chrome = spawn(chromePath, [
@@ -56,17 +58,28 @@ async function capture() {
   });
 
   await send("Emulation.setDeviceMetricsOverride", {
-    width: 390,
-    height: 1800,
+    width: viewport.width,
+    height: viewport.height,
     deviceScaleFactor: 1,
-    mobile: true,
-    screenWidth: 390,
-    screenHeight: 1800
+    mobile: captureMode !== "saved",
+    screenWidth: viewport.width,
+    screenHeight: viewport.height
   });
   await send("Emulation.setTouchEmulationEnabled", { enabled: true });
   await send("Page.enable");
   await send("Page.navigate", { url: targetUrl });
   await delay(8000);
+  if (captureMode === "saved") {
+    await send("Runtime.evaluate", {
+      expression: `
+        localStorage.clear();
+        const buttons = [...document.querySelectorAll('.bookmark')].slice(0, 2);
+        buttons.forEach((button) => button.click());
+        document.querySelector('#savedButton')?.click();
+      `
+    });
+    await delay(1000);
+  }
   const metrics = await send("Runtime.evaluate", {
     expression: "({ innerWidth, scrollWidth: document.documentElement.scrollWidth, bodyWidth: document.body.scrollWidth })",
     returnByValue: true

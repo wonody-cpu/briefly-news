@@ -29,6 +29,7 @@
 - [x] 웹 애플리케이션 URL
 - [x] GitHub Repository URL
 - [x] 주요 화면 캡처
+- [x] 저장한 기사 기능 화면 캡처
 - [x] AI Coding Agent 활용 과정
 - [x] 오류 발견·수정 및 기능 개선 사례
 - [x] 테스트 결과와 남은 한계
